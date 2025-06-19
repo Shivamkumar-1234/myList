@@ -145,9 +145,7 @@ const Favorites = () => {
                 <Heart className="favorites-auth-icon" />
                 <h3>Sign in required</h3>
                 <p>Please sign in to view your favorites list</p>
-                <button className="favorites-cr-button favorites-primary">
-                  Sign In
-                </button>
+               
               </div>
             </div>
           ) : isLoading ? (
