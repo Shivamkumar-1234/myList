@@ -1,0 +1,809 @@
+/* Home Page - Anime Tracking Platform */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800;900&family=Noto+Sans+JP:wght@300;400;500;700&display=swap");
+
+/* Root Variables */
+.home-crunchyroll-page {
+  --home-cr-orange: #e67e22; /* Softer orange */
+  --home-cr-orange-hover: #d35400; /* Softer orange hover */
+  --home-cr-dark-bg: #0b0b0b;
+  --home-cr-card-bg: #23252b;
+  --home-cr-border: #3a3d44;
+  --home-cr-text-primary: #ffffff;
+  --home-cr-text-secondary: #a0a0a0;
+  --home-cr-text-muted: #6b6b6b;
+  --home-cr-hover-bg: #2a2d34;
+  --home-cr-gradient: linear-gradient(135deg, #e67e22 0%, #d35400 100%); /* Softer gradient */
+}
+
+/* Base Styles */
+.home-crunchyroll-page {
+  min-height: 100vh;
+  background-color: var(--home-cr-dark-bg);
+  color: var(--home-cr-text-primary);
+  font-family: "Poppins", "Noto Sans JP", -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.6;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+.home-cr-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Hero Section - Original Design */
+.home-hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding-top: 60px;
+}
+
+.home-hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(ellipse at center, rgba(244, 117, 33, 0.1) 0%, transparent 70%),
+    linear-gradient(135deg, #0b0b0b 0%, #1a1c22 50%, #23252b 100%);
+}
+
+.home-floating-elements {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.home-floating-sakura {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, #ff69b4, #ff1493);
+  border-radius: 50% 0 50% 0;
+  opacity: 0.3;
+  animation: home-float-sakura 8s infinite linear;
+}
+
+.home-sakura-1 {
+  top: 20%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.home-sakura-2 {
+  top: 40%;
+  right: 20%;
+  animation-delay: 2s;
+}
+
+.home-sakura-3 {
+  top: 60%;
+  left: 30%;
+  animation-delay: 4s;
+}
+
+.home-sakura-4 {
+  top: 80%;
+  right: 10%;
+  animation-delay: 6s;
+}
+
+@keyframes home-float-sakura {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    transform: translateY(-100vh) rotate(360deg);
+  }
+}
+
+.home-hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.home-hero-text {
+  max-width: 700px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.home-welcome-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: rgba(244, 117, 33, 0.1);
+  border: 1px solid rgba(244, 117, 33, 0.3);
+  border-radius: 50px;
+  color: var(--home-cr-orange);
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 32px;
+  backdrop-filter: blur(10px);
+}
+
+.home-welcome-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.home-hero-title {
+  font-size: 4.5rem;
+  font-weight: 900;
+  margin: 0 0 32px 0;
+  line-height: 1.1;
+  font-family: "Poppins", sans-serif;
+}
+
+.home-title-line {
+  display: block;
+  color: var(--home-cr-text-primary);
+}
+
+.home-title-accent {
+  display: block;
+  background: var(--home-cr-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+}
+
+.home-hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--home-cr-text-secondary);
+  margin: 0 0 48px 0;
+  line-height: 1.7;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.home-hero-actions {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* About Platform Section */
+.home-about-section {
+  padding: 120px 0 0 0; /* Remove bottom padding */
+  background-color: var(--home-cr-card-bg);
+  position: relative;
+  overflow: hidden;
+}
+
+.home-about-layout {
+  display: grid;
+  grid-template-columns: 350px 1fr 350px;
+  gap: 60px;
+  align-items: end;
+  min-height: 700px; /* Increase height */
+}
+
+.home-about-character {
+  position: relative;
+  height: 700px; /* Increase height */
+  display: flex;
+  align-items: flex-end;
+  padding-top: 100px; /* Add 100px top margin */
+}
+
+.home-about-character-image {
+  width: 100%;
+  height: 600px; /* Set fixed height to fill remaining space */
+  object-fit: cover; /* Change to cover for full height */
+  object-position: bottom;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3));
+}
+
+.home-about-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 0;
+}
+
+.home-about-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 0 0 24px 0;
+  color: var(--home-cr-text-primary);
+  line-height: 1.2;
+}
+
+.home-about-description {
+  font-size: 1.1rem;
+  color: var(--home-cr-text-secondary);
+  line-height: 1.8;
+  margin: 0 0 40px 0;
+}
+
+.home-about-features {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.home-feature-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--home-cr-text-secondary);
+  font-weight: 500;
+}
+
+.home-feature-icon {
+  width: 20px;
+  height: 20px;
+  color: var(--home-cr-orange);
+}
+
+.home-about-collage {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 600px;
+  padding-bottom: 60px; /* Add padding to lift it above bottom */
+}
+
+.home-anime-collage {
+  position: relative;
+  width: 300px;
+  height: 500px;
+}
+
+.home-anime-poster {
+  position: absolute;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+}
+
+.home-anime-poster:hover {
+  transform: scale(1.1) rotate(3deg);
+  z-index: 10;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+}
+
+.home-poster-1 {
+  top: 0;
+  left: 0;
+  width: 180px;
+  height: 240px;
+  z-index: 4;
+}
+
+.home-poster-2 {
+  top: 60px;
+  right: 40px;
+  width: 160px;
+  height: 220px;
+  z-index: 3;
+}
+
+.home-poster-3 {
+  bottom: 80px;
+  left: 60px;
+  width: 140px;
+  height: 200px;
+  z-index: 2;
+}
+
+.home-poster-4 {
+  bottom: 0;
+  right: 0;
+  width: 120px;
+  height: 180px;
+  z-index: 1;
+}
+
+.home-anime-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.home-poster-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+  padding: 16px;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.home-anime-poster:hover .home-poster-overlay {
+  transform: translateY(0);
+}
+
+.home-poster-info h4 {
+  color: var(--home-cr-orange);
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+}
+
+.home-poster-info p {
+  color: white;
+  font-size: 12px;
+  margin: 0;
+}
+
+/* Categories Section */
+.home-categories-section {
+  position: relative;
+  padding: 120px 0;
+  overflow: hidden;
+}
+
+.home-categories-background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 500px;
+  opacity: 0.1;
+  z-index: 1;
+}
+
+.home-categories-bg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.home-section-header {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-bottom: 80px; /* Increase from 60px since we removed shortcut buttons */
+}
+
+.home-section-title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 0 0 20px 0;
+  color: var(--home-cr-text-primary);
+}
+
+.home-section-subtitle {
+  font-size: 1.2rem;
+  color: var(--home-cr-text-secondary);
+  margin: 0;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.home-categories-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.home-category-card {
+  position: relative;
+  padding: 50px 40px;
+  background-color: var(--home-cr-card-bg);
+  border: 1px solid var(--home-cr-border);
+  border-radius: 24px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  overflow: hidden;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.home-category-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--category-gradient);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.home-category-card:hover .home-category-background {
+  opacity: 0.1;
+}
+
+.home-category-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+  border-color: transparent;
+}
+
+.home-category-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.home-category-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 24px;
+  background: var(--category-gradient);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s ease;
+}
+
+.home-category-card:hover .home-category-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.home-category-icon svg {
+  width: 40px;
+  height: 40px;
+  color: white;
+}
+
+.home-category-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  color: var(--home-cr-text-primary);
+}
+
+.home-category-description {
+  font-size: 1rem;
+  color: var(--home-cr-text-secondary);
+  margin: 0 0 24px 0;
+  line-height: 1.6;
+}
+
+.home-category-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--home-cr-orange);
+  font-weight: 600;
+  transition: transform 0.3s ease;
+}
+
+.home-category-card:hover .home-category-action {
+  transform: translateX(4px);
+}
+
+.home-category-arrow {
+  width: 20px;
+  height: 20px;
+}
+
+/* CTA Section - Original Design */
+.home-cta-section {
+  position: relative;
+  padding: 120px 0;
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); /* Dark blue-gray background */
+  overflow: hidden;
+}
+
+.home-cta-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.home-cta-character-left {
+  position: absolute;
+  left: 1%;
+  bottom: 0;
+  width: 500px; /* Increase from 400px */
+  height: 600px; /* Increase from 500px */
+  opacity: 0.5; /* Increase opacity slightly */
+}
+
+.home-cta-character-right {
+  position: absolute;
+  right: 1%;
+  bottom: 0;
+  width: 500px; /* Increase from 400px */
+  height: 600px; /* Increase from 500px */
+  opacity: 0.5; /* Increase opacity slightly */
+}
+
+.home-cta-character-image-left,
+.home-cta-character-image-right {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom;
+}
+
+.home-cta-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.home-cta-title {
+  font-size: 3.5rem;
+  font-weight: 900;
+  margin: 0 0 24px 0;
+  color: white;
+  line-height: 1.2;
+}
+
+.home-cta-subtitle {
+  font-size: 1.3rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0 0 48px 0;
+  line-height: 1.7;
+}
+
+/* Buttons */
+.home-cr-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 32px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  font-family: inherit;
+}
+
+.home-cr-button.home-primary {
+  background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); /* Blue gradient */
+  color: white;
+  box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+}
+
+.home-cr-button.home-primary:hover {
+  background: linear-gradient(135deg, #2980b9 0%, #1f618d 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 35px rgba(52, 152, 219, 0.4);
+}
+
+.home-cr-button.home-secondary {
+  background-color: transparent;
+  color: var(--home-cr-text-primary);
+  border: 2px solid var(--home-cr-border);
+}
+
+.home-cr-button.home-secondary:hover {
+  background-color: var(--home-cr-hover-bg);
+  border-color: var(--home-cr-orange);
+  transform: translateY(-3px);
+}
+
+.home-cr-button.home-large {
+  padding: 20px 40px;
+  font-size: 18px;
+}
+
+.home-cr-button.home-xl {
+  padding: 24px 48px;
+  font-size: 20px;
+  border-radius: 16px;
+}
+
+.home-button-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Animations */
+.home-animate-on-scroll {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.home-animate-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .home-hero-actions {
+    margin-bottom: 40px; /* Add bottom margin */
+  }
+}
+
+@media (max-width: 768px) {
+  .home-cr-container {
+    padding: 0 16px;
+  }
+
+  .home-hero {
+    padding-top: 80px;
+    min-height: calc(100vh - 80px);
+  }
+
+  .home-hero-title {
+    font-size: 3rem;
+  }
+
+  .home-hero-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .home-hero-actions {
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 40px; /* Add bottom margin */
+  }
+
+  .home-categories-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .home-categories-background {
+    display: none;
+  }
+
+  .home-section-title {
+    font-size: 2.5rem;
+  }
+
+  .home-cta-title {
+    font-size: 2.5rem;
+  }
+
+  .home-cta-character-left,
+  .home-cta-character-right {
+    width: 350px; /* Smaller on mobile but still bigger than before */
+    height: 450px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-hero {
+    padding-top: 100px;
+  }
+
+  .home-hero-title {
+    font-size: 2.5rem;
+  }
+
+  .home-hero-actions {
+    margin-bottom: 40px; /* Add bottom margin */
+  }
+
+  /* About section mobile phone layout */
+  .home-about-section {
+    padding: 60px 0 0 0;
+  }
+
+  .home-about-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    min-height: auto;
+    align-items: stretch;
+  }
+
+  .home-about-text {
+    order: 1;
+    text-align: center;
+    padding: 20px 0;
+  }
+
+  .home-about-title {
+    font-size: 2rem;
+  }
+
+  .home-about-description {
+    font-size: 1rem;
+  }
+
+  .home-about-collage {
+    order: 2;
+    height: 300px;
+    padding-bottom: 0;
+    justify-content: center;
+  }
+
+  .home-anime-collage {
+    width: 250px;
+    height: 250px;
+  }
+
+  .home-poster-1 {
+    width: 100px;
+    height: 130px;
+  }
+
+  .home-poster-2 {
+    width: 90px;
+    height: 120px;
+  }
+
+  .home-poster-3 {
+    width: 80px;
+    height: 110px;
+  }
+
+  .home-poster-4 {
+    width: 70px;
+    height: 100px;
+  }
+
+  .home-about-character {
+    order: 3;
+    height: 300px;
+    padding-top: 0;
+    justify-content: center;
+    align-items: flex-end;
+    margin-top: 20px;
+  }
+
+  .home-about-character-image {
+    max-height: 310px;
+    max-width: 276px;
+    object-fit: contain;
+    object-position: bottom;
+  }
+
+  .home-about-title,
+  .home-section-title,
+  .home-cta-title {
+    font-size: 2rem;
+  }
+
+  .home-category-card {
+    padding: 40px 30px;
+    min-height: 250px;
+  }
+
+  .home-welcome-badge {
+    font-size: 12px;
+    padding: 10px 20px;
+    margin-top: 20px;
+  }
+
+  .home-hero-subtitle {
+    font-size: 1rem;
+  }
+
+  .home-cta-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .home-cta-character-left,
+  .home-cta-character-right {
+    width: 140px;
+    height: 400px;
+  }
+}

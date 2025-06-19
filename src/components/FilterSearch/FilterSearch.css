@@ -1,0 +1,514 @@
+/* Filter Search Page - Crunchyroll Style with Scoped Classes */
+@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap");
+
+/* Root Variables - Scoped to filter-search component */
+.filter-search-crunchyroll-page {
+  --filter-search-cr-orange: #f47521;
+  --filter-search-cr-orange-hover: #e86a1c;
+  --filter-search-cr-dark-bg: #0b0b0b;
+  --filter-search-cr-card-bg: #23252b;
+  --filter-search-cr-border: #3a3d44;
+  --filter-search-cr-text-primary: #ffffff;
+  --filter-search-cr-text-secondary: #a0a0a0;
+  --filter-search-cr-text-muted: #6b6b6b;
+  --filter-search-cr-hover-bg: #2a2d34;
+}
+
+/* Base Styles */
+.filter-search-crunchyroll-page {
+  min-height: 100vh;
+  background-color: var(--filter-search-cr-dark-bg);
+  color: var(--filter-search-cr-text-primary);
+  font-family: "Lato", -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.5;
+}
+
+.filter-search-cr-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header Section */
+.filter-search-cr-header {
+  background-color: var(--filter-search-cr-card-bg);
+  border-bottom: 1px solid var(--filter-search-cr-border);
+  padding: 24px 0;
+}
+
+.filter-search-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.filter-search-header-left {
+  flex: 1;
+}
+
+.filter-search-page-title {
+  font-size: 32px;
+  font-weight: 900;
+  margin: 0 0 12px 0;
+  color: var(--filter-search-cr-text-primary);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.filter-search-header-icon {
+  width: 32px;
+  height: 32px;
+  color: var(--filter-search-cr-orange);
+}
+
+.filter-search-page-meta {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-size: 14px;
+  color: var(--filter-search-cr-text-secondary);
+}
+
+.filter-search-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.filter-search-meta-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.filter-search-header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Buttons */
+.filter-search-cr-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.filter-search-cr-button.filter-search-primary {
+  background-color: var(--filter-search-cr-orange);
+  color: white;
+}
+
+.filter-search-cr-button.filter-search-primary:hover {
+  background-color: var(--filter-search-cr-orange-hover);
+}
+
+.filter-search-cr-button.filter-search-secondary {
+  background-color: transparent;
+  color: var(--filter-search-cr-text-secondary);
+  border: 1px solid var(--filter-search-cr-border);
+}
+
+.filter-search-cr-button.filter-search-secondary:hover {
+  background-color: var(--filter-search-cr-hover-bg);
+  color: var(--filter-search-cr-text-primary);
+}
+
+.filter-search-cr-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.filter-search-button-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* Main Content */
+.filter-search-cr-main {
+  padding: 32px 0;
+}
+
+/* Content Grid */
+.filter-search-content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+/* Card Styles */
+.filter-search-cr-card {
+  background-color: var(--filter-search-cr-card-bg);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.filter-search-cr-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border-color: var(--filter-search-cr-border);
+}
+
+.filter-search-cr-card:focus {
+  outline: 2px solid var(--filter-search-cr-orange);
+  outline-offset: 2px;
+}
+
+/* Poster Section */
+.filter-search-card-poster {
+  position: relative;
+  aspect-ratio: 3 / 4;
+}
+
+.filter-search-poster-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.filter-search-poster-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.filter-search-cr-card:hover .filter-search-poster-image {
+  transform: scale(1.05);
+}
+
+.filter-search-rank-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background-color: var(--filter-search-cr-orange);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.filter-search-year-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* Card Content */
+.filter-search-card-content {
+  padding: 16px;
+}
+
+.filter-search-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  color: var(--filter-search-cr-text-primary);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.filter-search-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-search-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+}
+
+.filter-search-meta-label {
+  color: var(--filter-search-cr-text-muted);
+  font-weight: 400;
+}
+
+.filter-search-meta-value {
+  color: var(--filter-search-cr-text-secondary);
+  font-weight: 400;
+}
+
+.filter-search-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.filter-search-star-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--filter-search-cr-orange);
+  fill: currentColor;
+}
+
+.filter-search-rating-value {
+  color: var(--filter-search-cr-text-secondary);
+  font-weight: 400;
+}
+
+.filter-search-year {
+  color: var(--filter-search-cr-orange);
+  font-weight: 700;
+}
+
+/* Load More */
+.filter-search-load-more-container {
+  display: flex;
+  justify-content: center;
+  padding: 32px 0;
+}
+
+.filter-search-load-more {
+  padding: 16px 32px;
+  font-size: 16px;
+}
+
+/* Loading State */
+.filter-search-loading-state {
+  padding: 32px 0;
+}
+
+.filter-search-loading-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 24px;
+}
+
+.filter-search-skeleton-card {
+  background-color: var(--filter-search-cr-card-bg);
+  border-radius: 4px;
+  overflow: hidden;
+  animation: filter-search-pulse 1.5s ease-in-out infinite;
+}
+
+.filter-search-skeleton-image {
+  aspect-ratio: 3 / 4;
+  background-color: var(--filter-search-cr-border);
+}
+
+.filter-search-skeleton-content {
+  padding: 16px;
+}
+
+.filter-search-skeleton-title {
+  height: 20px;
+  background-color: var(--filter-search-cr-border);
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.filter-search-skeleton-meta {
+  height: 60px;
+  background-color: var(--filter-search-cr-border);
+  border-radius: 4px;
+}
+
+@keyframes filter-search-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Empty State */
+.filter-search-empty-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  padding: 64px 0;
+}
+
+.filter-search-empty-content {
+  text-align: center;
+  max-width: 400px;
+}
+
+.filter-search-empty-icon {
+  width: 64px;
+  height: 64px;
+  color: var(--filter-search-cr-text-muted);
+  margin: 0 auto 24px;
+}
+
+.filter-search-empty-content h3 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  color: var(--filter-search-cr-text-primary);
+}
+
+.filter-search-empty-content p {
+  font-size: 16px;
+  color: var(--filter-search-cr-text-secondary);
+  margin: 0 0 32px 0;
+  line-height: 1.5;
+}
+
+/* Error State */
+.filter-search-error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 64px 0;
+  text-align: center;
+}
+
+.filter-search-error-icon {
+  width: 64px;
+  height: 64px;
+  color: #ff4757;
+  margin-bottom: 24px;
+}
+
+.filter-search-error-state h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  color: var(--filter-search-cr-text-primary);
+}
+
+.filter-search-error-message {
+  font-size: 16px;
+  color: var(--filter-search-cr-text-secondary);
+  margin: 0 0 32px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .filter-search-cr-container {
+    padding: 0 16px;
+  }
+
+  .filter-search-cr-header {
+    padding: 16px 0;
+  }
+
+  .filter-search-header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .filter-search-page-title {
+    font-size: 24px;
+  }
+
+  .filter-search-header-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .filter-search-page-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .filter-search-header-actions {
+    align-self: stretch;
+  }
+
+  .filter-search-cr-button {
+    flex: 1;
+  }
+
+  .filter-search-content-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .filter-search-card-content {
+    padding: 12px;
+  }
+
+  .filter-search-card-title {
+    font-size: 14px;
+    -webkit-line-clamp: 1;
+  }
+
+  .filter-search-meta-row {
+    font-size: 12px;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 18px;
+  }
+
+  .filter-search-meta-label {
+    flex-shrink: 0;
+    margin-right: 8px;
+  }
+
+  .filter-search-meta-value {
+    text-align: right;
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-search-content-grid {
+    gap: 8px;
+  }
+
+  .filter-search-card-content {
+    padding: 8px;
+  }
+
+  .filter-search-card-title {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .filter-search-card-meta {
+    gap: 4px;
+  }
+
+  .filter-search-meta-row {
+    font-size: 11px;
+    min-height: 16px;
+    padding: 2px 0;
+  }
+
+  .filter-search-meta-label {
+    margin-right: 6px;
+  }
+
+  .filter-search-rank-badge,
+  .filter-search-year-badge {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+}
