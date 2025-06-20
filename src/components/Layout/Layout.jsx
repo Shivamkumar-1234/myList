@@ -389,21 +389,17 @@
 
 
 
-
-
 import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import Footer from "../Footer/Footer";
-import { ToastContainer } from "react-toastify";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
+import "react-toastify/dist/ReactToastify.css";
 import "./Layout.css";
 
 function Layout() {
   const [user, setUser] = useState(null);
-  const [activeMenu, setActiveMenu] = useState("home");
   const [isVerifying, setIsVerifying] = useState(true);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
@@ -421,58 +417,34 @@ function Layout() {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/user/auth/verify`,
-        { 
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
+        { withCredentials: true }
       );
-
-      if (response.data.user) {
-        setUserState(response.data.user);
-      } else {
-        setUserState(null);
-      }
-    } catch (error) {
-      console.error("Session verification failed:", error);
+      setUserState(response.data.user);
+    } catch (err) {
       setUserState(null);
+      console.warn("Verification failed", err?.response?.data?.error);
     } finally {
       setIsVerifying(false);
     }
   };
 
   useEffect(() => {
-    let isMounted = true;
-    
-    const verifyAndRefresh = async () => {
-      if (isMounted) {
-        await verifyAuth();
-      }
-    };
-    
-    // Verify auth on mount
-    verifyAndRefresh();
+    verifyAuth();
 
-    // Set up periodic verification (every 5 minutes)
-    const interval = setInterval(verifyAndRefresh, 5 * 60 * 1000);
-    
-    return () => {
-      isMounted = false;
-      clearInterval(interval);
-    };
+    const interval = setInterval(() => {
+      verifyAuth();
+    }, 5 * 60 * 1000);
+
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
-    // Set up axios interceptor to handle 401 errors
     const interceptor = axios.interceptors.response.use(
       (response) => response,
       async (error) => {
-        if (error.response?.status === 401) {
-          await verifyAuth();
-          if (!user) {
-            toast.error("Session expired. Please login again.");
-          }
+        if (error.response?.status === 401 && user) {
+          toast.error("Session expired. Please login again.");
+          setUserState(null);
         }
         return Promise.reject(error);
       }
@@ -483,35 +455,27 @@ function Layout() {
     };
   }, [user]);
 
-  // Load sidebar state from localStorage
   useEffect(() => {
-    const savedSidebarState = localStorage.getItem("sidebarCollapsed");
-    if (savedSidebarState !== null) {
-      setIsSidebarCollapsed(JSON.parse(savedSidebarState));
+    const sidebarState = localStorage.getItem("sidebarCollapsed");
+    if (sidebarState) {
+      setIsSidebarCollapsed(JSON.parse(sidebarState));
     }
   }, []);
 
-  const handleLogin = (userData) => {
-    setUserState(userData);
-  };
+  const handleLogin = (userData) => setUserState(userData);
 
   const handleLogout = async () => {
     try {
       await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/user/auth/logout`,
         {},
-        {
-          withCredentials: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
+        { withCredentials: true }
       );
       setUserState(null);
       toast.success("Logged out successfully");
-    } catch (error) {
-      console.error("Logout error:", error);
-      toast.error("Failed to logout properly");
+    } catch (err) {
+      console.error("Logout error", err);
+      toast.error("Failed to logout");
     }
   };
 
@@ -521,15 +485,11 @@ function Layout() {
     localStorage.setItem("sidebarCollapsed", JSON.stringify(newState));
   };
 
-  if (isVerifying) {
-    return <div className="loading-screen">Loading...</div>;
-  }
+  if (isVerifying) return <div className="loading-screen">Loading...</div>;
 
   return (
     <div className="layout">
       <Sidebar
-        activeMenu={activeMenu}
-        onMenuClick={setActiveMenu}
         user={user}
         onLogin={handleLogin}
         onLogout={handleLogout}

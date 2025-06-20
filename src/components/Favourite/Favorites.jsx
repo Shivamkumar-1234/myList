@@ -57,8 +57,8 @@ const Favorites = () => {
       } catch (err) {
         console.error("Error fetching favorites:", err);
         setError(err.response?.data?.error || "Failed to fetch favorites");
-        if (err.response?.status === 401) {
-          await verifyAuth();
+        if (err.response?.status === 401 && user) {
+          await verifyAuth(); // only retry if already logged in
           toast.error("Session expired. Please login again.");
         }
       } finally {
@@ -145,7 +145,6 @@ const Favorites = () => {
                 <Heart className="favorites-auth-icon" />
                 <h3>Sign in required</h3>
                 <p>Please sign in to view your favorites list</p>
-               
               </div>
             </div>
           ) : isLoading ? (
