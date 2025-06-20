@@ -501,10 +501,7 @@ const handleCredentialResponse = async (response) => {
       `${process.env.REACT_APP_BACKEND_URL}/user/auth/google`,
       { token: response.credential },
       {
-        withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json'
-        }
+        withCredentials: true
       }
     );
 
@@ -513,6 +510,9 @@ const handleCredentialResponse = async (response) => {
     onLogin?.(backendResponse.data.user);
     setShowGoogleSignIn(false);
     toast.success(`Welcome ${backendResponse.data.user.name || backendResponse.data.user.email}!`);
+    
+    // Force a refresh after successful login to establish session
+    window.location.reload();
   } catch (error) {
     console.error("Login failed:", error);
     toast.error(error.message || "Login failed");

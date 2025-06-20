@@ -204,20 +204,12 @@ function Layout() {
   // }
 
 
-  
-
-
-const verifyAuth = async () => {
+  const verifyAuth = async () => {
   try {
     const response = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/user/auth/verify`,
       { 
-        withCredentials: true,
-        headers: {
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache',
-          'Expires': '0'
-        }
+        withCredentials: true
       }
     );
 
@@ -238,6 +230,31 @@ const verifyAuth = async () => {
     setIsVerifying(false);
   }
 };
+
+
+
+useEffect(() => {
+  let isMounted = true;
+  
+  const verifyAndRefresh = async () => {
+    if (isMounted) {
+      await verifyAuth();
+    }
+  };
+  
+  // Verify auth on mount
+  verifyAndRefresh();
+
+  // Set up periodic verification (every 5 minutes)
+  const interval = setInterval(verifyAndRefresh, 5 * 60 * 1000);
+  
+  return () => {
+    isMounted = false;
+    clearInterval(interval);
+  };
+}, []);
+
+
 
 // Add this useEffect for periodic verification
 useEffect(() => {

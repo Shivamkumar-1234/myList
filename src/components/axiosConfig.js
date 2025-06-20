@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-// Create a new axios instance instead of modifying the default
 const instance = axios.create({
   baseURL: process.env.REACT_APP_BACKEND_URL,
   withCredentials: true,
@@ -12,7 +11,7 @@ const instance = axios.create({
 
 // Request interceptor
 instance.interceptors.request.use(config => {
-  // You can add auth tokens here if needed
+  // Don't add cache-control headers as they cause CORS issues
   return config;
 }, error => {
   return Promise.reject(error);
@@ -21,10 +20,12 @@ instance.interceptors.request.use(config => {
 // Response interceptor
 instance.interceptors.response.use(response => {
   return response;
-}, error => {
+}, async error => {
   if (error.response?.status === 401) {
-    // Handle unauthorized errors
-    window.location.href = '/home'; // Or your login route
+    // Redirect to home only if not already on auth-related pages
+    if (!window.location.pathname.includes('/auth')) {
+      window.location.href = '/home';
+    }
   }
   return Promise.reject(error);
 });
