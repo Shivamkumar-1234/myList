@@ -204,11 +204,21 @@ function Layout() {
   // }
 
 
-  const verifyAuth = async () => {
+  
+
+
+const verifyAuth = async () => {
   try {
     const response = await axios.get(
       `${process.env.REACT_APP_BACKEND_URL}/user/auth/verify`,
-      { withCredentials: true }
+      { 
+        withCredentials: true,
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      }
     );
 
     if (response.data.user) {
@@ -229,8 +239,7 @@ function Layout() {
   }
 };
 
-
-
+// Add this useEffect for periodic verification
 useEffect(() => {
   const verifyAndRefresh = async () => {
     await verifyAuth();
@@ -244,6 +253,10 @@ useEffect(() => {
   
   return () => clearInterval(interval);
 }, []);
+
+
+
+
 
 
 

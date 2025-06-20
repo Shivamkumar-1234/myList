@@ -463,30 +463,67 @@ export function Sidebar({
     }
   }
 
-  const handleCredentialResponse = async (response) => {
-    const toastId = toast.loading("Authenticating...")
 
-    try {
-      const backendResponse = await fetch(`${process.env.REACT_APP_BACKEND_URL}/user/auth/google`, {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: response.credential }),
-      })
+  // const handleCredentialResponse = async (response) => {
+  //   const toastId = toast.loading("Authenticating...")
 
-      if (!backendResponse.ok) throw new Error("Authentication failed")
+  //   try {
+  //     const backendResponse = await fetch(`${process.env.REACT_APP_BACKEND_URL}/user/auth/google`, {
+  //       method: "POST",
+  //       credentials: "include",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ token: response.credential }),
+  //     })
 
-      const data = await backendResponse.json()
-      onLogin?.(data.user)
-      setShowGoogleSignIn(false)
-      toast.success(`Welcome ${data.user.name || data.user.email}!`)
-    } catch (error) {
-      console.error("Login failed:", error)
-      toast.error(error.message || "Login failed")
-    } finally {
-      toast.dismiss(toastId)
-    }
+  //     if (!backendResponse.ok) throw new Error("Authentication failed")
+
+  //     const data = await backendResponse.json()
+  //     onLogin?.(data.user)
+  //     setShowGoogleSignIn(false)
+  //     toast.success(`Welcome ${data.user.name || data.user.email}!`)
+  //   } catch (error) {
+  //     console.error("Login failed:", error)
+  //     toast.error(error.message || "Login failed")
+  //   } finally {
+  //     toast.dismiss(toastId)
+  //   }
+  // }
+
+
+
+
+const handleCredentialResponse = async (response) => {
+  const toastId = toast.loading("Authenticating...");
+
+  try {
+    const backendResponse = await axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}/user/auth/google`,
+      { token: response.credential },
+      {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    if (!backendResponse.data.user) throw new Error("Authentication failed");
+
+    onLogin?.(backendResponse.data.user);
+    setShowGoogleSignIn(false);
+    toast.success(`Welcome ${backendResponse.data.user.name || backendResponse.data.user.email}!`);
+  } catch (error) {
+    console.error("Login failed:", error);
+    toast.error(error.message || "Login failed");
+  } finally {
+    toast.dismiss(toastId);
   }
+};
+
+
+
+
+
 
   const handleLogout = async () => {
     setIsLoggingOut(true)

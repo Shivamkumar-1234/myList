@@ -1,23 +1,32 @@
-// src/axiosConfig.js
 import axios from 'axios';
 
-// Set default configuration
-axios.defaults.withCredentials = true;
-axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL;
-
-// Optional: Add request interceptors
-axios.interceptors.request.use(config => {
-  // You can modify requests here if needed
-  return config;
+// Create a new axios instance instead of modifying the default
+const instance = axios.create({
+  baseURL: process.env.REACT_APP_BACKEND_URL,
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  }
 });
 
-// Optional: Add response interceptors
-axios.interceptors.response.use(
-  response => response,
-  error => {
-    // Handle errors globally
-    return Promise.reject(error);
-  }
-);
+// Request interceptor
+instance.interceptors.request.use(config => {
+  // You can add auth tokens here if needed
+  return config;
+}, error => {
+  return Promise.reject(error);
+});
 
-export default axios;
+// Response interceptor
+instance.interceptors.response.use(response => {
+  return response;
+}, error => {
+  if (error.response?.status === 401) {
+    // Handle unauthorized errors
+    window.location.href = '/home'; // Or your login route
+  }
+  return Promise.reject(error);
+});
+
+export default instance;
