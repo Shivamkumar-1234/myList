@@ -389,6 +389,7 @@
 
 
 
+
 import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Sidebar from "../Sidebar/Sidebar";
@@ -417,9 +418,19 @@ function Layout() {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/user/auth/verify`,
-        { withCredentials: true }
+        { 
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
       );
-      setUserState(response.data.user);
+      
+      if (response.data.user) {
+        setUserState(response.data.user);
+      } else {
+        setUserState(null);
+      }
     } catch (err) {
       setUserState(null);
       console.warn("Verification failed", err?.response?.data?.error);
@@ -469,7 +480,12 @@ function Layout() {
       await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/user/auth/logout`,
         {},
-        { withCredentials: true }
+        { 
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
       );
       setUserState(null);
       toast.success("Logged out successfully");
