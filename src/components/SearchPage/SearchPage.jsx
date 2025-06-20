@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from "../axiosConfig";
+import axios from "axios";
 import {
   Search,
   ChevronDown,

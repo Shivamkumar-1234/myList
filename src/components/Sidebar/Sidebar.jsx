@@ -380,7 +380,7 @@ import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import "./Sidebar.css"
-import axios from "../axiosConfig"
+import axios from "axios";
 
 export function Sidebar({
   className = "",

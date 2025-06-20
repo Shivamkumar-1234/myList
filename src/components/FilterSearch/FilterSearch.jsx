@@ -228,7 +228,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom"
-import axios from "../axiosConfig";
+import axios from "axios";
 import { Star, Flame, Calendar, RotateCcw, Filter, X } from "lucide-react"
 import { toast } from "react-toastify"
 import "./FilterSearch.css"
