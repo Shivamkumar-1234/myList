@@ -5,7 +5,7 @@
 // import { ToastContainer } from "react-toastify";
 // import { toast } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
-// import axios from "axios";
+// import axios from "../axiosConfig";
 
 // import "./Layout.css"; // 
 
@@ -150,7 +150,6 @@
 
 
 
-"use client"
 
 import { Outlet } from "react-router-dom"
 import { useState, useEffect } from "react"
@@ -159,7 +158,7 @@ import Footer from "../Footer/Footer"
 import { ToastContainer } from "react-toastify"
 import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
-import axios from "axios"
+import axios from "../axiosConfig";
 
 import "./Layout.css"
 
@@ -179,30 +178,74 @@ function Layout() {
     }
   }
 
-  const verifyAuth = async () => {
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/auth/verify`, {
-        withCredentials: true,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+  // const verifyAuth = async () => {
+  //   try {
+  //     const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/auth/verify`, {
+  //       // withCredentials: true,
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     })
 
-      if (response.data.user) {
-        setUserState({
-          email: response.data.user.email,
-          id: response.data.user.id,
-          name: response.data.user.name,
-          picture: response.data.user.picture,
-        })
-      }
-    } catch (error) {
-      console.error("Session verification failed:", error)
-      setUserState(null)
-    } finally {
-      setIsVerifying(false)
+  //     if (response.data.user) {
+  //       setUserState({
+  //         email: response.data.user.email,
+  //         id: response.data.user.id,
+  //         name: response.data.user.name,
+  //         picture: response.data.user.picture,
+  //       })
+  //     }
+  //   } catch (error) {
+  //     console.error("Session verification failed:", error)
+  //     setUserState(null)
+  //   } finally {
+  //     setIsVerifying(false)
+  //   }
+  // }
+
+
+  const verifyAuth = async () => {
+  try {
+    const response = await axios.get(
+      `${process.env.REACT_APP_BACKEND_URL}/user/auth/verify`,
+      { withCredentials: true }
+    );
+
+    if (response.data.user) {
+      setUserState({
+        email: response.data.user.email,
+        id: response.data.user.id,
+        name: response.data.user.name,
+        picture: response.data.user.picture,
+      });
+    } else {
+      setUserState(null);
     }
+  } catch (error) {
+    console.error("Session verification failed:", error);
+    setUserState(null);
+  } finally {
+    setIsVerifying(false);
   }
+};
+
+
+
+useEffect(() => {
+  const verifyAndRefresh = async () => {
+    await verifyAuth();
+  };
+  
+  // Verify auth on mount
+  verifyAndRefresh();
+
+  // Set up periodic verification (every 5 minutes)
+  const interval = setInterval(verifyAndRefresh, 5 * 60 * 1000);
+  
+  return () => clearInterval(interval);
+}, []);
+
+
 
   useEffect(() => {
     verifyAuth()
@@ -251,7 +294,7 @@ function Layout() {
         `${process.env.REACT_APP_BACKEND_URL}/user/auth/logout`,
         {},
         {
-          withCredentials: true,
+          // withCredentials: true,
           headers: {
             "Content-Type": "application/json",
           },

@@ -373,7 +373,6 @@
 
 
 
-"use client"
 
 import { Search, Home, Heart, LogIn, LogOut, X, Menu, ChevronLeft } from "lucide-react"
 import { useEffect, useState, useRef } from "react"

@@ -1,6 +1,6 @@
 // import { useState, useEffect, useRef } from "react";
 // import { useLocation, useNavigate, useOutletContext } from "react-router-dom";
-// import axios from "axios";
+// import axios from "../axiosConfig";
 // import { Star, Flame, Calendar } from "lucide-react";
 // import "../SearchPage/SearchPage.css";
 // import { toast } from "react-toastify";
@@ -228,7 +228,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import { useLocation, useNavigate, useOutletContext } from "react-router-dom"
-import axios from "axios"
+import axios from "../axiosConfig";
 import { Star, Flame, Calendar, RotateCcw, Filter, X } from "lucide-react"
 import { toast } from "react-toastify"
 import "./FilterSearch.css"

@@ -247,7 +247,8 @@
 
 import { useState, useEffect } from "react"
 import { useParams, useNavigate, useOutletContext } from "react-router-dom"
-import axios from "axios"
+// import axios from "axios"
+import axios from "../axiosConfig";
 import { Heart, ChevronLeft, Star, Users, Calendar, Play, Info, AlertTriangle, Film } from "lucide-react"
 import { toast } from "react-toastify"
 import "./Detail.css"

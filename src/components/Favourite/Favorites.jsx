@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import axios from "axios";
+import axios from "../axiosConfig";
 import {
   X,
   Star,
