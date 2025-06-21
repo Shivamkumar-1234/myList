@@ -1,14 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import axios from "axios";
-import {
-  X,
-  Star,
-  AlertTriangle,
-  Bookmark,
-  Calendar,
-  Heart,
-} from "lucide-react";
+import { X, Star, AlertTriangle, Bookmark, Calendar, Heart } from "lucide-react";
 import { toast } from "react-toastify";
 import "./Favorites.css";
 
@@ -19,72 +12,84 @@ const Favorites = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    if (!user) {
-      toast.error("You must be logged in to view favorites");
-      return;
-    }
+  const fetchFavorites = async () => {
+    if (!user) return;
 
-    const fetchFavorites = async () => {
-      try {
-        setIsLoading(true);
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/user/favorites/${user.id}`,
-          {
-            withCredentials: true,
-            timeout: 5000,
-          }
-        );
-
-        // Transform data to ensure consistent structure
-        const formattedFavorites = response.data.map((item) => ({
-          mal_id: item.mal_id || item.id,
-          id: item.mal_id || item.id,
-          title: item.title,
+    try {
+      setIsLoading(true);
+      setError(null);
+      
+      const response = await axios.get(`/user/favorites/${user.id}`);
+      
+      // Ensure the response data is properly formatted
+      const formattedFavorites = response.data.map((item) => {
+        // Handle cases where the data might be malformed
+        const baseItem = {
+          mal_id: item.mal_id || item.id || 0,
+          id: item.mal_id || item.id || 0,
+          title: item.title || "Unknown Title",
           images: item.images || {
             jpg: {
               image_url: item.image_url || "",
             },
           },
-          score: item.score,
-          members: item.members,
-          year: item.year,
-          status: item.status,
-        }));
+          score: item.score || 0,
+          members: item.members || 0,
+          year: item.year || null,
+          status: item.status || "Unknown"
+        };
 
-        setFavorites(formattedFavorites);
-        setError(null);
-      } catch (err) {
-        console.error("Error fetching favorites:", err);
-        setError(err.response?.data?.error || "Failed to fetch favorites");
-        if (err.response?.status === 401 && user) {
-          await verifyAuth(); // only retry if already logged in
-          toast.error("Session expired. Please login again.");
+        // If the item has anime_data as a string, try to parse it
+        if (typeof item.anime_data === 'string') {
+          try {
+            const parsedData = JSON.parse(item.anime_data);
+            return {
+              ...baseItem,
+              ...parsedData,
+              mal_id: parsedData.mal_id || baseItem.mal_id,
+              id: parsedData.mal_id || baseItem.id
+            };
+          } catch (e) {
+            console.error("Error parsing anime_data:", e);
+            return baseItem;
+          }
         }
-      } finally {
-        setIsLoading(false);
-      }
-    };
 
+        return baseItem;
+      });
+
+      setFavorites(formattedFavorites);
+    } catch (err) {
+      console.error("Error fetching favorites:", err);
+      
+      if (err.response?.status === 401 || err.response?.status === 403) {
+        await verifyAuth();
+        toast.error("Session expired. Please login again.");
+      } else {
+        setError(err.response?.data?.error || "Failed to fetch favorites");
+        toast.error("Failed to load favorites. Please try again.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchFavorites();
-  }, [user, navigate, verifyAuth]);
+  }, [user]);
 
   const removeFavorite = async (animeId) => {
     try {
-      await axios.delete(
-        `${process.env.REACT_APP_BACKEND_URL}/user/favorites/${user.id}/${animeId}`,
-        {
-          withCredentials: true,
-        }
-      );
-
+      await axios.delete(`/user/favorites/${user.id}/${animeId}`);
       setFavorites((prev) => prev.filter((fav) => fav.mal_id !== animeId));
       toast.success("Removed from favorites");
     } catch (err) {
       console.error("Error removing favorite:", err);
-      toast.error(err.response?.data?.error || "Failed to remove favorite");
-      if (err.response?.status === 401) {
+      if (err.response?.status === 401 || err.response?.status === 403) {
         await verifyAuth();
+        toast.error("Session expired. Please login again.");
+      } else {
+        toast.error(err.response?.data?.error || "Failed to remove favorite");
       }
     }
   };
@@ -111,7 +116,6 @@ const Favorites = () => {
 
   return (
     <div className="favorites-crunchyroll-page">
-      {/* Header Section */}
       <div className="favorites-cr-header">
         <div className="favorites-cr-container">
           <div className="favorites-header-content">
@@ -136,7 +140,6 @@ const Favorites = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="favorites-cr-main">
         <div className="favorites-cr-container">
           {!user ? (
@@ -172,12 +175,11 @@ const Favorites = () => {
                   <div className="favorites-card-poster">
                     <div className="favorites-poster-container">
                       <img
-                        src={anime.images?.jpg?.image_url || ""}
+                        src={anime.images?.jpg?.image_url || "https://via.placeholder.com/300x400/23252b/ffffff?text=No+Image"}
                         alt={anime.title}
                         className="favorites-poster-image"
                         onError={(e) => {
-                          e.target.src =
-                            "https://via.placeholder.com/300x400/23252b/ffffff?text=No+Image";
+                          e.target.src = "https://via.placeholder.com/300x400/23252b/ffffff?text=No+Image";
                         }}
                       />
                       <button

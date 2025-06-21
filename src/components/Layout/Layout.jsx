@@ -1,234 +1,3 @@
-// import { Outlet } from "react-router-dom";
-// import { useState, useEffect } from "react";
-// import Sidebar from "../Sidebar/Sidebar";
-// import Footer from "../Footer/Footer";
-// import { ToastContainer } from "react-toastify";
-// import { toast } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-// import axios from "axios";
-
-// import "./Layout.css";
-
-// function Layout() {
-//   const [user, setUser] = useState(null);
-//   const [activeMenu, setActiveMenu] = useState("home");
-//   const [isVerifying, setIsVerifying] = useState(true);
-//   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-
-//   const setUserState = (userData) => {
-//     if (userData) {
-//       setUser(userData);
-//       localStorage.setItem("user", JSON.stringify(userData));
-//     } else {
-//       setUser(null);
-//       localStorage.removeItem("user");
-//     }
-//   };
-
-//   // const verifyAuth = async () => {
-//   //   try {
-//   //     const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/auth/verify`, {
-//   //       // withCredentials: true,
-//   //       headers: {
-//   //         "Content-Type": "application/json",
-//   //       },
-//   //     })
-
-//   //     if (response.data.user) {
-//   //       setUserState({
-//   //         email: response.data.user.email,
-//   //         id: response.data.user.id,
-//   //         name: response.data.user.name,
-//   //         picture: response.data.user.picture,
-//   //       })
-//   //     }
-//   //   } catch (error) {
-//   //     console.error("Session verification failed:", error)
-//   //     setUserState(null)
-//   //   } finally {
-//   //     setIsVerifying(false)
-//   //   }
-//   // }
-
-//   const verifyAuth = async () => {
-//     try {
-//       const response = await axios.get(
-//         `${process.env.REACT_APP_BACKEND_URL}/user/auth/verify`,
-//         {
-//           withCredentials: true,
-//         }
-//       );
-
-//       if (response.data.user) {
-//         setUserState({
-//           email: response.data.user.email,
-//           id: response.data.user.id,
-//           name: response.data.user.name,
-//           picture: response.data.user.picture,
-//         });
-//       } else {
-//         setUserState(null);
-//       }
-//     } catch (error) {
-//       console.error("Session verification failed:", error);
-//       setUserState(null);
-//     } finally {
-//       setIsVerifying(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     let isMounted = true;
-
-//     const verifyAndRefresh = async () => {
-//       if (isMounted) {
-//         await verifyAuth();
-//       }
-//     };
-
-//     // Verify auth on mount
-//     verifyAndRefresh();
-
-//     // Set up periodic verification (every 5 minutes)
-//     const interval = setInterval(verifyAndRefresh, 5 * 60 * 1000);
-
-//     return () => {
-//       isMounted = false;
-//       clearInterval(interval);
-//     };
-//   }, []);
-
-//   // Add this useEffect for periodic verification
-//   useEffect(() => {
-//     const verifyAndRefresh = async () => {
-//       await verifyAuth();
-//     };
-
-//     // Verify auth on mount
-//     verifyAndRefresh();
-
-//     // Set up periodic verification (every 5 minutes)
-//     const interval = setInterval(verifyAndRefresh, 5 * 60 * 1000);
-
-//     return () => clearInterval(interval);
-//   }, []);
-
-//   useEffect(() => {
-//     verifyAuth();
-
-//     // Set up axios interceptor to handle 401 errors
-//     const interceptor = axios.interceptors.response.use(
-//       (response) => response,
-//       async (error) => {
-//         if (error.response?.status === 401) {
-//           // If we get a 401, verify auth status
-//           await verifyAuth();
-
-//           if (!user) {
-//             toast.error("Session expired. Please login again.");
-//           }
-//         }
-//         return Promise.reject(error);
-//       }
-//     );
-
-//     return () => {
-//       axios.interceptors.response.eject(interceptor);
-//     };
-//   }, []);
-
-//   // Load sidebar state from localStorage
-//   useEffect(() => {
-//     const savedSidebarState = localStorage.getItem("sidebarCollapsed");
-//     if (savedSidebarState !== null) {
-//       setIsSidebarCollapsed(JSON.parse(savedSidebarState));
-//     }
-//   }, []);
-
-//   const handleLogin = (userData) => {
-//     setUserState({
-//       email: userData.email,
-//       id: userData.id,
-//       name: userData.name,
-//       picture: userData.picture,
-//     });
-//   };
-
-//   const handleLogout = async () => {
-//     try {
-//       await axios.post(
-//         `${process.env.REACT_APP_BACKEND_URL}/user/auth/logout`,
-//         {},
-//         {
-//           // withCredentials: true,
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//         }
-//       );
-//       setUserState(null);
-//       toast.success("Logged out successfully");
-//     } catch (error) {
-//       console.error("Logout error:", error);
-//       toast.error("Failed to logout properly");
-//     }
-//   };
-
-//   const handleToggleSidebar = () => {
-//     const newState = !isSidebarCollapsed;
-//     setIsSidebarCollapsed(newState);
-//     localStorage.setItem("sidebarCollapsed", JSON.stringify(newState));
-//   };
-
-//   if (isVerifying) {
-//     return <div className="loading-screen">Loading...</div>;
-//   }
-
-//   return (
-//     <div className="layout">
-//       <Sidebar
-//         activeMenu={activeMenu}
-//         onMenuClick={setActiveMenu}
-//         user={user}
-//         onLogin={handleLogin}
-//         onLogout={handleLogout}
-//         isCollapsed={isSidebarCollapsed}
-//         onToggleCollapse={handleToggleSidebar}
-//       />
-
-//       <div
-//         className={`layout-content-wrapper ${
-//           isSidebarCollapsed ? "layout-content-wrapper--expanded" : ""
-//         }`}
-//       >
-//         <main className="content">
-//           <Outlet context={{ user, verifyAuth }} />
-//         </main>
-//         <Footer />
-//       </div>
-
-//       <ToastContainer position="top-right" autoClose={3000} />
-//     </div>
-//   );
-// }
-
-// export default Layout;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Sidebar from "../Sidebar/Sidebar";
@@ -239,8 +8,8 @@ import axios from "axios";
 import "./Layout.css";
 
 // Configure axios defaults
-axios.defaults.withCredentials = true;
 axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL;
+axios.defaults.withCredentials = true;
 
 function Layout() {
   const [user, setUser] = useState(null);
@@ -248,36 +17,48 @@ function Layout() {
   const [isVerifying, setIsVerifying] = useState(true);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
+  const setAuthToken = (token) => {
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      localStorage.setItem("token", token);
+    } else {
+      delete axios.defaults.headers.common["Authorization"];
+      localStorage.removeItem("token");
+    }
+  };
+
   const setUserState = (userData, token) => {
     if (userData && token) {
       setUser(userData);
       localStorage.setItem("user", JSON.stringify(userData));
-      localStorage.setItem("token", token);
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      setAuthToken(token);
     } else {
       setUser(null);
       localStorage.removeItem("user");
-      localStorage.removeItem("token");
-      delete axios.defaults.headers.common["Authorization"];
+      setAuthToken(null);
     }
   };
 
   const verifyAuth = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("/user/auth/verify", {
-        headers: token ? { Authorization: `Bearer ${token}` } : {}
-      });
+      if (!token) {
+        setUserState(null);
+        return null;
+      }
+
+      const response = await axios.get("/user/auth/verify");
       
       if (response.data.user) {
-        setUserState(response.data.user, token);
-      } else {
-        setUserState(null);
+        setUserState(response.data.user, response.data.token);
+        return response.data.user;
       }
-      return response.data.user;
+      return null;
     } catch (error) {
       console.error("Session verification failed:", error);
-      setUserState(null);
+      if (error.response?.status === 401 || error.response?.status === 403) {
+        setUserState(null);
+      }
       return null;
     } finally {
       setIsVerifying(false);
@@ -285,34 +66,24 @@ function Layout() {
   };
 
   useEffect(() => {
-    let isMounted = true;
-    
-    const verifyAndRefresh = async () => {
-      if (isMounted) await verifyAuth();
-    };
-    
-    verifyAndRefresh();
-    const interval = setInterval(verifyAndRefresh, 5 * 60 * 1000);
-    
-    return () => {
-      isMounted = false;
-      clearInterval(interval);
-    };
-  }, []);
-
-  useEffect(() => {
-    const interceptor = axios.interceptors.response.use(
-      response => response,
-      async error => {
-        if (error.response?.status === 401) {
-          setUserState(null);
-          toast.error("Session expired. Please login again.");
-        }
-        return Promise.reject(error);
+    const verifyAndInitialize = async () => {
+      // Check for existing user in localStorage
+      const savedUser = localStorage.getItem("user");
+      const savedToken = localStorage.getItem("token");
+      
+      if (savedUser && savedToken) {
+        setUser(JSON.parse(savedUser));
+        setAuthToken(savedToken);
       }
-    );
+      
+      await verifyAuth();
+    };
 
-    return () => axios.interceptors.response.eject(interceptor);
+    verifyAndInitialize();
+    
+    const interval = setInterval(verifyAuth, 5 * 60 * 1000);
+    
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -364,7 +135,7 @@ function Layout() {
         isSidebarCollapsed ? "layout-content-wrapper--expanded" : ""
       }`}>
         <main className="content">
-          <Outlet context={{ user, verifyAuth }} />
+          <Outlet context={{ user, verifyAuth, handleLogin }} />
         </main>
         <Footer />
       </div>
@@ -375,7 +146,3 @@ function Layout() {
 }
 
 export default Layout;
-
-
-
-

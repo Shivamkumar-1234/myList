@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./AuthPage.css";
 
 const AuthPage = () => {
-  const { handleLogin } = useOutletContext();
+  const { handleLogin } = useOutletContext(); // Make sure this matches what you provide in Layout
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
@@ -44,13 +44,18 @@ const AuthPage = () => {
       const endpoint = isLogin ? "login" : "signup";
       const { data } = await axios.post(`/user/auth/${endpoint}`, formData);
       
-      handleLogin(data.user, data.token);
-      toast.success(`Welcome ${data.user.name || data.user.email}!`);
-      navigate("/home");
+      // Make sure handleLogin exists before calling it
+      if (handleLogin && typeof handleLogin === 'function') {
+        handleLogin(data.user, data.token);
+        toast.success(`Welcome ${data.user.name || data.user.email}!`);
+        navigate("/home");
+      } else {
+        console.error('handleLogin is not a function');
+      }
     } catch (error) {
       console.error("Auth error:", error);
       const errorMessage = error.response?.data?.error || 
-                         (isLogin ? "Login failed" : "Signup failed");
+                       (isLogin ? "Login failed" : "Signup failed");
       toast.error(errorMessage);
     } finally {
       setIsLoading(false);

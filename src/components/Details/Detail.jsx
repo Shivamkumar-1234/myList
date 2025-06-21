@@ -1,11 +1,8 @@
-
-
 "use client"
 
 import { useState, useEffect } from "react"
 import { useParams, useNavigate, useOutletContext } from "react-router-dom"
 import axios from "axios"
-
 import { Heart, ChevronLeft, Star, Users, Calendar, Play, Info, AlertTriangle, Film } from "lucide-react"
 import { toast } from "react-toastify"
 import "./Detail.css"
@@ -26,14 +23,9 @@ const Detail = () => {
         setIsLoading(true)
         setError(null)
 
-        // Fetch anime details
-        const detailsResponse = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/anime/${id}`, {
-          withCredentials: true,
-        })
-
+        const detailsResponse = await axios.get(`/user/anime/${id}`)
         setAnime(detailsResponse.data.data)
 
-        // Check if anime is in favorites
         if (user) {
           await checkFavoriteStatus()
         } else {
@@ -53,10 +45,7 @@ const Detail = () => {
     const checkFavoriteStatus = async () => {
       try {
         setIsCheckingFavorite(true)
-        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/favorites/${user.id}`, {
-          withCredentials: true,
-        })
-
+        const response = await axios.get(`/user/favorites/${user.id}`)
         const found = response.data.some((item) => item.mal_id == id || item.id == id)
         setIsFavorite(found)
       } catch (err) {
@@ -74,22 +63,20 @@ const Detail = () => {
 
   const toggleFavorite = async () => {
     if (!user) {
-      toast.info("Please sign in to add favorites")
-      return
+      toast.info("Please sign in to add favorites");
+      return;
     }
 
     try {
       if (isFavorite) {
-        await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/user/favorites/${user.id}/${id}`, {
-          withCredentials: true,
-        })
-        toast.success("Removed from favorites")
-        setIsFavorite(false)
+        await axios.delete(`/user/favorites/${user.id}/${id}`);
+        toast.success("Removed from favorites");
+        setIsFavorite(false);
       } else {
-        if (!anime) return
+        if (!anime) return;
 
         await axios.post(
-          `${process.env.REACT_APP_BACKEND_URL}/user/favorites`,
+          `/user/favorites`,
           {
             userId: user.id,
             animeId: id,
@@ -109,22 +96,21 @@ const Detail = () => {
               studios: anime.studios,
               trailer: anime.trailer,
             },
-          },
-          { withCredentials: true },
-        )
-        toast.success("Added to favorites")
-        setIsFavorite(true)
+          }
+        );
+        toast.success("Added to favorites");
+        setIsFavorite(true);
       }
     } catch (err) {
-      console.error("Favorite error:", err)
-      if (err.response?.status === 401) {
-        await verifyAuth()
-        toast.error("Please sign in again.")
+      console.error("Favorite error:", err);
+      if (err.response?.status === 401 || err.response?.status === 403) {
+        await verifyAuth();
+        toast.error("Session expired. Please login again.");
       } else {
-        toast.error(err.response?.data?.error || "Failed to update favorites")
+        toast.error(err.response?.data?.error || "Failed to update favorites");
       }
     }
-  }
+  };
 
   if (error) {
     return (
@@ -195,8 +181,7 @@ const Detail = () => {
                     src={
                       anime.images?.jpg?.large_image_url ||
                       anime.images?.jpg?.image_url ||
-                      "https://via.placeholder.com/300x400/23252b/ffffff?text=No+Image" ||
-                      "/placeholder.svg"
+                      "https://via.placeholder.com/300x400/23252b/ffffff?text=No+Image"
                     }
                     alt={anime.title}
                     className="detail-poster-image"

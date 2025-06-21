@@ -1,5 +1,3 @@
-
-
 "use client"
 
 import { useState, useEffect, useRef } from "react"
@@ -20,7 +18,6 @@ const FilterSearch = () => {
   const [hasMore, setHasMore] = useState(true)
   const initialLoad = useRef(true)
 
-  // Load saved anime from localStorage on component mount
   useEffect(() => {
     const savedAnime = localStorage.getItem("animeList")
     const savedState = localStorage.getItem("animeListState")
@@ -28,7 +25,6 @@ const FilterSearch = () => {
     if (savedAnime && savedState) {
       const { search, page, hasMore } = JSON.parse(savedState)
 
-      // Only use saved data if the search parameters match
       if (search === location.search) {
         setAnimeList(JSON.parse(savedAnime))
         setCurrentPage(page)
@@ -38,7 +34,6 @@ const FilterSearch = () => {
     }
   }, [location.search])
 
-  // Save anime to localStorage whenever it changes
   useEffect(() => {
     if (animeList.length > 0) {
       localStorage.setItem("animeList", JSON.stringify(animeList))
@@ -61,14 +56,12 @@ const FilterSearch = () => {
       const searchParams = new URLSearchParams(location.search)
       searchParams.set("page", currentPage.toString())
 
-      const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/user/all-anime`, {
+      const response = await axios.get(`/user/all-anime`, {
         params: Object.fromEntries(searchParams),
-        withCredentials: true,
       })
 
       const newAnime = response.data.data || []
       setAnimeList((prev) => {
-        // Filter out any duplicates that might already exist
         const existingIds = new Set(prev.map((anime) => anime.mal_id))
         const uniqueNewAnime = newAnime.filter((anime) => !existingIds.has(anime.mal_id))
         return [...prev, ...uniqueNewAnime]
@@ -88,7 +81,6 @@ const FilterSearch = () => {
     }
   }
 
-  // Load initial data if no saved data exists
   useEffect(() => {
     if (initialLoad.current && hasMore && animeList.length === 0) {
       loadMoreAnime()
@@ -102,7 +94,6 @@ const FilterSearch = () => {
     setCurrentPage(1)
     setHasMore(true)
     initialLoad.current = true
- 
   }
 
   const getFilterTitle = () => {
@@ -146,7 +137,6 @@ const FilterSearch = () => {
 
   return (
     <div className="filter-search-crunchyroll-page">
-      {/* Header Section */}
       <div className="filter-search-cr-header">
         <div className="filter-search-cr-container">
           <div className="filter-search-header-content">
@@ -180,7 +170,6 @@ const FilterSearch = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="filter-search-cr-main">
         <div className="filter-search-cr-container">
           {animeList.length > 0 ? (
