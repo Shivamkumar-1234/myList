@@ -78,21 +78,21 @@ const Favorites = () => {
     fetchFavorites();
   }, [user]);
 
-  const removeFavorite = async (animeId) => {
-    try {
-      await axios.delete(`/user/favorites/${user.id}/${animeId}`);
-      setFavorites((prev) => prev.filter((fav) => fav.mal_id !== animeId));
-      toast.success("Removed from favorites");
-    } catch (err) {
-      console.error("Error removing favorite:", err);
-      if (err.response?.status === 401 || err.response?.status === 403) {
-        await verifyAuth();
-        toast.error("Session expired. Please login again.");
-      } else {
-        toast.error(err.response?.data?.error || "Failed to remove favorite");
-      }
-    }
-  };
+  // const removeFavorite = async (animeId) => {
+  //   try {
+  //     await axios.delete(`/user/favorites/${user.id}/${animeId}`);
+  //     setFavorites((prev) => prev.filter((fav) => fav.mal_id !== animeId));
+  //     toast.success("Removed from favorites");
+  //   } catch (err) {
+  //     console.error("Error removing favorite:", err);
+  //     if (err.response?.status === 401 || err.response?.status === 403) {
+  //       await verifyAuth();
+  //       toast.error("Session expired. Please login again.");
+  //     } else {
+  //       toast.error(err.response?.data?.error || "Failed to remove favorite");
+  //     }
+  //   }
+  // };
 
   if (error) {
     return (
@@ -182,7 +182,7 @@ const Favorites = () => {
                           e.target.src = "https://via.placeholder.com/300x400/23252b/ffffff?text=No+Image";
                         }}
                       />
-                      <button
+                      {/* <button
                         onClick={(e) => {
                           e.stopPropagation();
                           removeFavorite(anime.mal_id);
@@ -191,7 +191,7 @@ const Favorites = () => {
                         title="Remove from favorites"
                       >
                         <X className="favorites-remove-icon" />
-                      </button>
+                      </button> */}
                       {anime.year && (
                         <div className="favorites-year-badge">{anime.year}</div>
                       )}
