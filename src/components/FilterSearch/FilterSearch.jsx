@@ -204,7 +204,7 @@ const FilterSearch = () => {
                       <h3 className="filter-search-card-title" title={anime.title}>
                         {anime.title}
                       </h3>
-                      <div className="filter-search-card-meta">
+                      {/* <div className="filter-search-card-meta">
                         <div className="filter-search-meta-row">
                           <span className="filter-search-meta-label">Rating:</span>
                           <div className="filter-search-rating">
@@ -228,7 +228,7 @@ const FilterSearch = () => {
                           <span className="filter-search-meta-label">Year:</span>
                           <span className="filter-search-meta-value filter-search-year">{anime.year || "N/A"}</span>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 ))}
