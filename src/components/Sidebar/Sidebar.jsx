@@ -31,7 +31,7 @@ export function Sidebar({
 
   const baseMenuItems = [
     { id: "search", icon: Search, label: "Search", url: "/search-page" },
-    { id: "home", icon: Home, label: "Home", url: "/home" },
+    { id: "home", icon: Home, label: "Home", url: "/" },
     { id: "favourite", icon: Heart, label: "Favourite", url: "/favorites" },
   ];
 
