@@ -451,7 +451,7 @@ import { toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import axios from "axios"
 import { Search, ChevronDown, Star, Flame, Calendar, X, Filter, AlertTriangle } from "lucide-react"
-import "./search-page.css"
+import "./SearchPage.css"
 
 const SearchPage = () => {
   const { user } = useOutletContext()
