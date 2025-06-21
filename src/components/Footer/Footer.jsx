@@ -82,7 +82,7 @@ export function Footer({ className = "" }) {
 
         {/* Copyright */}
         <div style={copyrightStyle}>
-          © 2025 ANIME LIST™ | Made by ANIME LIST Team
+          © 2025 AnimeVerse™ | Made by AnimeVerse Team
         </div>
       </div>
     </footer>
