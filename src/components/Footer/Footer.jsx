@@ -1,7 +1,7 @@
 export function Footer({ className = "" }) {
   const footerLinks = [
-    { label: "Movies", href: "/movies" },
-    { label: "This season", href: "/this-season" },
+    // { label: "Movies", href: "/movies" },
+    // { label: "This season", href: "/this-season" },
     { label: "Privacy Policy", href: "/privacy-policy" },
   ];
 

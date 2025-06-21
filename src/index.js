@@ -8,6 +8,7 @@ import FilterSearch from "./components/FilterSearch/FilterSearch";
 import Detail from "./components/Details/Detail";
 import Favorites from "./components/Favourite/Favorites";
 import AuthPage from "./components/auth/AuthPage";
+import Privacy from "./components/Privacy/Privacy";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -21,6 +22,7 @@ root.render(
           <Route path="/anime/:id" element={<Detail />} />
           <Route path="/favorites" element={<Favorites />} />
           <Route path="/auth" element={<AuthPage />} />
+          <Route path="/privacy-policy" element={<Privacy />} />
         </Route>
       </Routes>
     </Router>
