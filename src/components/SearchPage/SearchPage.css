@@ -378,7 +378,7 @@
 /* Card Styles */
 .rsp-card {
   background-color: var(--rsp-card-bg);
-  border-radius: 6px;
+  /* border-radius: 6px; */
   overflow: hidden;
   transition: all 0.3s ease;
   cursor: pointer;

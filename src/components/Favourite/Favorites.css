@@ -131,7 +131,7 @@
 /* Card Styles */
 .favorites-cr-card {
   background-color: var(--favorites-cr-card-bg);
-  border-radius: 4px;
+  /* border-radius: 4px; */
   overflow: hidden;
   transition: all 0.3s ease;
   cursor: pointer;
