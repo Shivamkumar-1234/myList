@@ -81,9 +81,7 @@ function Layout() {
 
     verifyAndInitialize();
     
-    const interval = setInterval(verifyAuth, 5 * 60 * 1000);
-    
-    return () => clearInterval(interval);
+   
   }, []);
 
   useEffect(() => {
