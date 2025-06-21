@@ -6,7 +6,8 @@
   --filter-search-cr-orange: #f47521;
   --filter-search-cr-orange-hover: #e86a1c;
   --filter-search-cr-dark-bg: #0b0b0b;
-  --filter-search-cr-card-bg: #23252b;
+  /* --filter-search-cr-card-bg: #23252b; */
+  --filter-search-cr-card-bg: #00000000;
   --filter-search-cr-border: #3a3d44;
   --filter-search-cr-text-primary: #ffffff;
   --filter-search-cr-text-secondary: #a0a0a0;
