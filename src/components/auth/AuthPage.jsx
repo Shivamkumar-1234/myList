@@ -48,7 +48,7 @@ const AuthPage = () => {
       if (handleLogin && typeof handleLogin === 'function') {
         handleLogin(data.user, data.token);
         toast.success(`Welcome ${data.user.name || data.user.email}!`);
-        navigate("/home");
+        navigate("/");
       } else {
         console.error('handleLogin is not a function');
       }
