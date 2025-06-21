@@ -15,7 +15,7 @@ root.render(
     <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index path="/home" element={<Home />} />
+          <Route index element={<Home />} />
           <Route path="/search-page" element={<SearchPage />} />
           <Route path="/filter-search" element={<FilterSearch />} />
           <Route path="/anime/:id" element={<Detail />} />
