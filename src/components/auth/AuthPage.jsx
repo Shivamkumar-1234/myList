@@ -15,6 +15,18 @@ const AuthPage = () => {
     name: ""
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const newErrors = {};
+    if (!formData.email) newErrors.email = "Email is required";
+    if (!formData.password) newErrors.password = "Password is required";
+    if (!isLogin && !formData.name) newErrors.name = "Name is required";
+    if (formData.password.length < 8) newErrors.password = "Password must be at least 8 characters";
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -25,25 +37,21 @@ const AuthPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validate()) return;
+    
     setIsLoading(true);
-
     try {
       const endpoint = isLogin ? "login" : "signup";
-      const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/user/auth/${endpoint}`,
-        formData,
-        {
-          withCredentials: true
-        }
-      );
-
-      localStorage.setItem('token', response.data.token);
-      handleLogin(response.data.user);
-      toast.success(`Welcome ${response.data.user.name || response.data.user.email}!`);
+      const { data } = await axios.post(`/user/auth/${endpoint}`, formData);
+      
+      handleLogin(data.user, data.token);
+      toast.success(`Welcome ${data.user.name || data.user.email}!`);
       navigate("/home");
     } catch (error) {
       console.error("Auth error:", error);
-      toast.error(error.response?.data?.error || "Authentication failed");
+      const errorMessage = error.response?.data?.error || 
+                         (isLogin ? "Login failed" : "Signup failed");
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -64,8 +72,9 @@ const AuthPage = () => {
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
-                required={!isLogin}
+                className={errors.name ? "error" : ""}
               />
+              {errors.name && <span className="error-message">{errors.name}</span>}
             </div>
           )}
           
@@ -77,8 +86,9 @@ const AuthPage = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              required
+              className={errors.email ? "error" : ""}
             />
+            {errors.email && <span className="error-message">{errors.email}</span>}
           </div>
           
           <div className="form-group">
@@ -89,9 +99,9 @@ const AuthPage = () => {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              required
-              minLength={8}
+              className={errors.password ? "error" : ""}
             />
+            {errors.password && <span className="error-message">{errors.password}</span>}
           </div>
           
           <button type="submit" disabled={isLoading} className="auth-button">
@@ -103,6 +113,7 @@ const AuthPage = () => {
           <p>
             {isLogin ? "Don't have an account?" : "Already have an account?"}
             <button 
+              type="button"
               onClick={() => setIsLogin(!isLogin)} 
               className="switch-button"
             >

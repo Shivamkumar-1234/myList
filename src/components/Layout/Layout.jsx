@@ -229,24 +229,18 @@
 
 
 
-
-
-
-
-
-
 import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Sidebar from "../Sidebar/Sidebar";
 import Footer from "../Footer/Footer";
-import { ToastContainer } from "react-toastify";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import "./Layout.css";
 
-// Configure axios to always send credentials
+// Configure axios defaults
 axios.defaults.withCredentials = true;
+axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL;
 
 function Layout() {
   const [user, setUser] = useState(null);
@@ -255,40 +249,34 @@ function Layout() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   const setUserState = (userData, token) => {
-    if (userData) {
+    if (userData && token) {
       setUser(userData);
       localStorage.setItem("user", JSON.stringify(userData));
-      if (token) {
-        localStorage.setItem("token", token);
-      }
+      localStorage.setItem("token", token);
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     } else {
       setUser(null);
       localStorage.removeItem("user");
       localStorage.removeItem("token");
+      delete axios.defaults.headers.common["Authorization"];
     }
   };
 
   const verifyAuth = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/user/auth/verify`,
-        {
-          headers: token ? { Authorization: `Bearer ${token}` } : {}
-        }
-      );
-
+      const response = await axios.get("/user/auth/verify", {
+        headers: token ? { Authorization: `Bearer ${token}` } : {}
+      });
+      
       if (response.data.user) {
-        setUserState(response.data.user);
+        setUserState(response.data.user, token);
       } else {
         setUserState(null);
       }
       return response.data.user;
     } catch (error) {
       console.error("Session verification failed:", error);
-      if (error.response?.status === 401) {
-        localStorage.removeItem("token");
-      }
       setUserState(null);
       return null;
     } finally {
@@ -300,15 +288,10 @@ function Layout() {
     let isMounted = true;
     
     const verifyAndRefresh = async () => {
-      if (isMounted) {
-        await verifyAuth();
-      }
+      if (isMounted) await verifyAuth();
     };
     
-    // Initial verification
     verifyAndRefresh();
-    
-    // Set up periodic verification (every 5 minutes)
     const interval = setInterval(verifyAndRefresh, 5 * 60 * 1000);
     
     return () => {
@@ -318,31 +301,24 @@ function Layout() {
   }, []);
 
   useEffect(() => {
-    // Set up axios response interceptor
     const interceptor = axios.interceptors.response.use(
-      (response) => response,
-      async (error) => {
+      response => response,
+      async error => {
         if (error.response?.status === 401) {
-          localStorage.removeItem("token");
-          const user = await verifyAuth();
-          if (!user) {
-            toast.error("Session expired. Please login again.");
-          }
+          setUserState(null);
+          toast.error("Session expired. Please login again.");
         }
         return Promise.reject(error);
       }
     );
 
-    return () => {
-      axios.interceptors.response.eject(interceptor);
-    };
+    return () => axios.interceptors.response.eject(interceptor);
   }, []);
 
   useEffect(() => {
-    // Load sidebar state from localStorage
-    const savedSidebarState = localStorage.getItem("sidebarCollapsed");
-    if (savedSidebarState !== null) {
-      setIsSidebarCollapsed(JSON.parse(savedSidebarState));
+    const savedState = localStorage.getItem("sidebarCollapsed");
+    if (savedState !== null) {
+      setIsSidebarCollapsed(JSON.parse(savedState));
     }
   }, []);
 
@@ -352,15 +328,7 @@ function Layout() {
 
   const handleLogout = async () => {
     try {
-      await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/user/auth/logout`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
-        }
-      );
+      await axios.post("/user/auth/logout");
       setUserState(null);
       toast.success("Logged out successfully");
     } catch (error) {
@@ -407,3 +375,7 @@ function Layout() {
 }
 
 export default Layout;
+
+
+
+
