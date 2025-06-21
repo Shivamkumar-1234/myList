@@ -235,9 +235,6 @@
 
 
 
-
-
-
 import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Sidebar from "../Sidebar/Sidebar";
@@ -246,9 +243,10 @@ import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-
 import "./Layout.css";
 
+// Configure axios to always send credentials
+axios.defaults.withCredentials = true;
 
 function Layout() {
   const [user, setUser] = useState(null);
@@ -256,25 +254,27 @@ function Layout() {
   const [isVerifying, setIsVerifying] = useState(true);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
-  const setUserState = (userData) => {
+  const setUserState = (userData, token) => {
     if (userData) {
       setUser(userData);
       localStorage.setItem("user", JSON.stringify(userData));
+      if (token) {
+        localStorage.setItem("token", token);
+      }
     } else {
       setUser(null);
       localStorage.removeItem("user");
+      localStorage.removeItem("token");
     }
   };
 
   const verifyAuth = async () => {
     try {
+      const token = localStorage.getItem("token");
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/user/auth/verify`,
-        { 
-          withCredentials: true,
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
+        {
+          headers: token ? { Authorization: `Bearer ${token}` } : {}
         }
       );
 
@@ -283,9 +283,14 @@ function Layout() {
       } else {
         setUserState(null);
       }
+      return response.data.user;
     } catch (error) {
       console.error("Session verification failed:", error);
+      if (error.response?.status === 401) {
+        localStorage.removeItem("token");
+      }
       setUserState(null);
+      return null;
     } finally {
       setIsVerifying(false);
     }
@@ -300,7 +305,10 @@ function Layout() {
       }
     };
     
+    // Initial verification
     verifyAndRefresh();
+    
+    // Set up periodic verification (every 5 minutes)
     const interval = setInterval(verifyAndRefresh, 5 * 60 * 1000);
     
     return () => {
@@ -310,13 +318,13 @@ function Layout() {
   }, []);
 
   useEffect(() => {
-    verifyAuth();
-
+    // Set up axios response interceptor
     const interceptor = axios.interceptors.response.use(
       (response) => response,
       async (error) => {
         if (error.response?.status === 401) {
-          await verifyAuth();
+          localStorage.removeItem("token");
+          const user = await verifyAuth();
           if (!user) {
             toast.error("Session expired. Please login again.");
           }
@@ -330,27 +338,16 @@ function Layout() {
     };
   }, []);
 
-
-
-
-
-
-  // Load sidebar state from localStorage
   useEffect(() => {
+    // Load sidebar state from localStorage
     const savedSidebarState = localStorage.getItem("sidebarCollapsed");
     if (savedSidebarState !== null) {
       setIsSidebarCollapsed(JSON.parse(savedSidebarState));
     }
   }, []);
 
-
-
-  const handleLogin = (userData) => {
-    setUserState({
-      email: userData.email,
-      id: userData.id,
-      name: userData.name,
-    });
+  const handleLogin = (userData, token) => {
+    setUserState(userData, token);
   };
 
   const handleLogout = async () => {
@@ -359,23 +356,19 @@ function Layout() {
         `${process.env.REACT_APP_BACKEND_URL}/user/auth/logout`,
         {},
         {
-          withCredentials: true,
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`
           }
         }
       );
-      localStorage.removeItem('token');
       setUserState(null);
       toast.success("Logged out successfully");
     } catch (error) {
       console.error("Logout error:", error);
       toast.error("Failed to logout properly");
+      setUserState(null);
     }
   };
-  
-
-
 
   const handleToggleSidebar = () => {
     const newState = !isSidebarCollapsed;
@@ -399,11 +392,9 @@ function Layout() {
         onToggleCollapse={handleToggleSidebar}
       />
 
-      <div
-        className={`layout-content-wrapper ${
-          isSidebarCollapsed ? "layout-content-wrapper--expanded" : ""
-        }`}
-      >
+      <div className={`layout-content-wrapper ${
+        isSidebarCollapsed ? "layout-content-wrapper--expanded" : ""
+      }`}>
         <main className="content">
           <Outlet context={{ user, verifyAuth }} />
         </main>
