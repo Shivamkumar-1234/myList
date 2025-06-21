@@ -6,7 +6,8 @@
   --favorites-cr-orange: #f47521;
   --favorites-cr-orange-hover: #e86a1c;
   --favorites-cr-dark-bg: #0b0b0b;
-  --favorites-cr-card-bg: #23252b;
+  /* --favorites-cr-card-bg: #23252b; */
+  --favorites-cr-card-bg: #00000000;
   --favorites-cr-border: #3a3d44;
   --favorites-cr-text-primary: #ffffff;
   --favorites-cr-text-secondary: #a0a0a0;

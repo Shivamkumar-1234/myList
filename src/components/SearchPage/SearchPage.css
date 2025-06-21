@@ -6,7 +6,8 @@
   --rsp-orange: #f47521;
   --rsp-orange-hover: #e86a1c;
   --rsp-dark-bg: #0b0b0b;
-  --rsp-card-bg: #23252b;
+  /* --rsp-card-bg: #23252b; */
+  --rsp-card-bg: #00000000;
   --rsp-border: #3a3d44;
   --rsp-text-primary: #ffffff;
   --rsp-text-secondary: #a0a0a0;

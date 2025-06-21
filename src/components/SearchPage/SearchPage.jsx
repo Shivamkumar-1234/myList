@@ -740,7 +740,7 @@ const SearchPage = () => {
                       <h3 className="rsp-card-title" title={anime.title}>
                         {anime.title}
                       </h3>
-                      <div className="rsp-card-meta">
+                      {/* <div className="rsp-card-meta">
                         <div className="rsp-meta-row">
                           <span className="rsp-meta-label">Rating:</span>
                           <div className="rsp-rating">
@@ -764,7 +764,7 @@ const SearchPage = () => {
                           <span className="rsp-meta-label">Year:</span>
                           <span className="rsp-meta-value rsp-year">{anime.year || "N/A"}</span>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 ))}

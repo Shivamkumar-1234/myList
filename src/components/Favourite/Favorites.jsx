@@ -201,7 +201,7 @@ const Favorites = () => {
                     <h3 className="favorites-card-title" title={anime.title}>
                       {anime.title}
                     </h3>
-                    <div className="favorites-card-meta">
+                    {/* <div className="favorites-card-meta">
                       <div className="favorites-meta-row">
                         <span className="favorites-meta-label">Rating:</span>
                         <div className="favorites-rating">
@@ -225,7 +225,7 @@ const Favorites = () => {
                           {anime.status || "Unknown"}
                         </span>
                       </div>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               ))}
