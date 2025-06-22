@@ -1,4 +1,4 @@
-/* Filter Search Page - Crunchyroll Style with Scoped Classes */
+/* Filter Search Page - Responsive Design with Scoped Classes */
 @import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap");
 
 /* Root Variables - Scoped to filter-search component */
@@ -6,13 +6,13 @@
   --filter-search-cr-orange: #f47521;
   --filter-search-cr-orange-hover: #e86a1c;
   --filter-search-cr-dark-bg: #0b0b0b;
-  /* --filter-search-cr-card-bg: #23252b; */
   --filter-search-cr-card-bg: #00000000;
   --filter-search-cr-border: #3a3d44;
   --filter-search-cr-text-primary: #ffffff;
   --filter-search-cr-text-secondary: #a0a0a0;
   --filter-search-cr-text-muted: #6b6b6b;
   --filter-search-cr-hover-bg: #2a2d34;
+  --filter-search-sidebar-width: 64px;
 }
 
 /* Base Styles */
@@ -22,69 +22,88 @@
   color: var(--filter-search-cr-text-primary);
   font-family: "Lato", -apple-system, BlinkMacSystemFont, sans-serif;
   line-height: 1.5;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+/* Sidebar state adjustments */
+.filter-search-page--sidebar-collapsed {
+  --filter-search-sidebar-width: 0px;
 }
 
 .filter-search-cr-container {
-  max-width: 1200px;
+  max-width: calc(100vw - var(--filter-search-sidebar-width));
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 12px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 /* Header Section */
 .filter-search-cr-header {
   background-color: var(--filter-search-cr-card-bg);
   border-bottom: 1px solid var(--filter-search-cr-border);
-  padding: 24px 0;
+  padding: 12px 0;
+  padding-top: 52px;
+  width: 100%;
 }
 
 .filter-search-header-content {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  width: 100%;
 }
 
 .filter-search-header-left {
   flex: 1;
+  min-width: 0;
 }
 
 .filter-search-page-title {
-  font-size: 32px;
+  font-size: 18px;
   font-weight: 900;
-  margin: 0 0 12px 0;
+  margin: 0 0 8px 0;
   color: var(--filter-search-cr-text-primary);
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
+  word-break: break-word;
 }
 
 .filter-search-header-icon {
-  width: 32px;
-  height: 32px;
+  width: 18px;
+  height: 18px;
   color: var(--filter-search-cr-orange);
+  flex-shrink: 0;
 }
 
 .filter-search-page-meta {
   display: flex;
-  align-items: center;
-  gap: 24px;
-  font-size: 14px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  font-size: 12px;
   color: var(--filter-search-cr-text-secondary);
 }
 
 .filter-search-meta-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .filter-search-meta-icon {
-  width: 16px;
-  height: 16px;
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
 }
 
 .filter-search-header-actions {
   display: flex;
-  gap: 12px;
+  gap: 8px;
 }
 
 /* Buttons */
@@ -92,17 +111,18 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 10px 20px;
+  gap: 6px;
+  padding: 12px 16px;
   border: none;
-  border-radius: 4px;
-  font-size: 14px;
+  border-radius: 8px;
+  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   cursor: pointer;
   transition: all 0.2s ease;
   text-decoration: none;
+  min-height: 44px;
 }
 
 .filter-search-cr-button.filter-search-primary {
@@ -131,36 +151,39 @@
 }
 
 .filter-search-button-icon {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
 }
 
 /* Main Content */
 .filter-search-cr-main {
-  padding: 32px 0;
+  padding: 16px 0;
+  width: 100%;
 }
 
-/* Content Grid */
+/* Content Grid - Mobile First (3 columns for mobile) */
 .filter-search-content-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 24px;
-  margin-bottom: 32px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 16px;
+  width: 100%;
 }
 
 /* Card Styles */
 .filter-search-cr-card {
   background-color: var(--filter-search-cr-card-bg);
-  /* border-radius: 4px; */
   overflow: hidden;
   transition: all 0.3s ease;
   cursor: pointer;
   border: 1px solid transparent;
+  width: 100%;
 }
 
 .filter-search-cr-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
   border-color: var(--filter-search-cr-border);
 }
 
@@ -173,6 +196,7 @@
 .filter-search-card-poster {
   position: relative;
   aspect-ratio: 3 / 4;
+  width: 100%;
 }
 
 .filter-search-poster-container {
@@ -190,84 +214,105 @@
 }
 
 .filter-search-cr-card:hover .filter-search-poster-image {
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 
 .filter-search-rank-badge {
   position: absolute;
-  top: 8px;
-  left: 8px;
+  top: 4px;
+  left: 4px;
   background-color: var(--filter-search-cr-orange);
   color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-size: 8px;
   font-weight: 700;
 }
 
 .filter-search-year-badge {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 4px;
+  right: 4px;
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-size: 8px;
   font-weight: 700;
 }
 
-/* Card Content */
+/* Card Content - Key changes here for title visibility */
 .filter-search-card-content {
-  padding: 16px;
+  padding: 6px;
+  min-height: 50px; /* Ensure enough space for titles */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .filter-search-card-title {
-  font-size: 16px;
+  font-size: 10px;
   font-weight: 700;
-  margin: 0 0 12px 0;
+  margin: 0;
   color: var(--filter-search-cr-text-primary);
-  line-height: 1.3;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  line-height: 1.2;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  /* Remove truncation - let titles wrap naturally */
+  display: block;
+  white-space: normal;
+  /* Ensure minimum height for consistency */
+  min-height: 24px;
+  /* Allow text to expand as needed */
+  flex: 1;
 }
 
 .filter-search-card-meta {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 3px;
+  margin-top: 6px;
 }
 
 .filter-search-meta-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 13px;
+  font-size: 9px;
+  min-height: 14px;
 }
 
 .filter-search-meta-label {
   color: var(--filter-search-cr-text-muted);
   font-weight: 400;
+  flex-shrink: 0;
+  margin-right: 4px;
 }
 
 .filter-search-meta-value {
   color: var(--filter-search-cr-text-secondary);
   font-weight: 400;
+  text-align: right;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .filter-search-rating {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
 .filter-search-star-icon {
-  width: 14px;
-  height: 14px;
+  width: 10px;
+  height: 10px;
   color: var(--filter-search-cr-orange);
   fill: currentColor;
+  flex-shrink: 0;
 }
 
 .filter-search-rating-value {
@@ -284,28 +329,30 @@
 .filter-search-load-more-container {
   display: flex;
   justify-content: center;
-  padding: 32px 0;
+  padding: 16px 0;
 }
 
 .filter-search-load-more {
-  padding: 16px 32px;
-  font-size: 16px;
+  padding: 12px 24px;
+  font-size: 12px;
+  width: 100%;
+  max-width: 200px;
 }
 
 /* Loading State */
 .filter-search-loading-state {
-  padding: 32px 0;
+  padding: 16px 0;
 }
 
 .filter-search-loading-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
 }
 
 .filter-search-skeleton-card {
   background-color: var(--filter-search-cr-card-bg);
-  border-radius: 4px;
+  border-radius: 6px;
   overflow: hidden;
   animation: filter-search-pulse 1.5s ease-in-out infinite;
 }
@@ -316,20 +363,21 @@
 }
 
 .filter-search-skeleton-content {
-  padding: 16px;
+  padding: 6px;
+  min-height: 50px;
 }
 
 .filter-search-skeleton-title {
-  height: 20px;
+  height: 10px;
   background-color: var(--filter-search-cr-border);
-  border-radius: 4px;
-  margin-bottom: 12px;
+  border-radius: 3px;
+  margin-bottom: 4px;
 }
 
 .filter-search-skeleton-meta {
-  height: 60px;
+  height: 20px;
   background-color: var(--filter-search-cr-border);
-  border-radius: 4px;
+  border-radius: 3px;
 }
 
 @keyframes filter-search-pulse {
@@ -347,34 +395,35 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 400px;
-  padding: 64px 0;
+  min-height: 300px;
+  padding: 32px 0;
 }
 
 .filter-search-empty-content {
   text-align: center;
-  max-width: 400px;
+  max-width: 300px;
+  padding: 0 16px;
 }
 
 .filter-search-empty-icon {
-  width: 64px;
-  height: 64px;
+  width: 48px;
+  height: 48px;
   color: var(--filter-search-cr-text-muted);
-  margin: 0 auto 24px;
+  margin: 0 auto 16px;
 }
 
 .filter-search-empty-content h3 {
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 700;
-  margin: 0 0 12px 0;
+  margin: 0 0 8px 0;
   color: var(--filter-search-cr-text-primary);
 }
 
 .filter-search-empty-content p {
-  font-size: 16px;
+  font-size: 14px;
   color: var(--filter-search-cr-text-secondary);
-  margin: 0 0 32px 0;
-  line-height: 1.5;
+  margin: 0 0 16px 0;
+  line-height: 1.4;
 }
 
 /* Error State */
@@ -383,60 +432,70 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 400px;
-  padding: 64px 0;
+  min-height: 300px;
+  padding: 32px 16px;
   text-align: center;
 }
 
 .filter-search-error-icon {
-  width: 64px;
-  height: 64px;
+  width: 48px;
+  height: 48px;
   color: #ff4757;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
 }
 
 .filter-search-error-state h2 {
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 700;
-  margin: 0 0 12px 0;
+  margin: 0 0 8px 0;
   color: var(--filter-search-cr-text-primary);
 }
 
 .filter-search-error-message {
-  font-size: 16px;
+  font-size: 14px;
   color: var(--filter-search-cr-text-secondary);
-  margin: 0 0 32px 0;
+  margin: 0 0 16px 0;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
+/* Tablet Responsive Design */
+@media (min-width: 481px) and (max-width: 768px) {
+  .filter-search-crunchyroll-page {
+    --filter-search-sidebar-width: 60px;
+  }
+
+  .filter-search-page--sidebar-collapsed {
+    --filter-search-sidebar-width: 0px;
+  }
+
   .filter-search-cr-container {
     padding: 0 16px;
+    max-width: calc(100vw - var(--filter-search-sidebar-width));
   }
 
   .filter-search-cr-header {
     padding: 16px 0;
+    padding-top: 56px;
   }
 
   .filter-search-header-content {
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
+    gap: 12px;
   }
 
   .filter-search-page-title {
-    font-size: 24px;
+    font-size: 22px;
   }
 
   .filter-search-header-icon {
-    width: 24px;
-    height: 24px;
+    width: 22px;
+    height: 22px;
   }
 
   .filter-search-page-meta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+    flex-direction: row;
+    gap: 16px;
+    font-size: 13px;
   }
 
   .filter-search-header-actions {
@@ -448,68 +507,240 @@
   }
 
   .filter-search-content-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
   }
 
-  .filter-search-card-content {
-    padding: 12px;
-  }
-
-  .filter-search-card-title {
-    font-size: 14px;
-    -webkit-line-clamp: 1;
-  }
-
-  .filter-search-meta-row {
-    font-size: 12px;
-    justify-content: space-between;
-    align-items: center;
-    min-height: 18px;
-  }
-
-  .filter-search-meta-label {
-    flex-shrink: 0;
-    margin-right: 8px;
-  }
-
-  .filter-search-meta-value {
-    text-align: right;
-    flex: 1;
-  }
-}
-
-@media (max-width: 480px) {
-  .filter-search-content-grid {
-    gap: 8px;
+  .filter-search-loading-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
   }
 
   .filter-search-card-content {
     padding: 8px;
+    min-height: 60px;
   }
 
   .filter-search-card-title {
-    font-size: 13px;
-    margin-bottom: 8px;
-  }
-
-  .filter-search-card-meta {
-    gap: 4px;
-  }
-
-  .filter-search-meta-row {
-    font-size: 11px;
-    min-height: 16px;
-    padding: 2px 0;
-  }
-
-  .filter-search-meta-label {
-    margin-right: 6px;
+    font-size: 12px;
+    min-height: 28px;
   }
 
   .filter-search-rank-badge,
   .filter-search-year-badge {
-    font-size: 10px;
-    padding: 2px 6px;
+    font-size: 9px;
+  }
+
+  .filter-search-button-icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Desktop Responsive Design */
+@media (min-width: 769px) {
+  .filter-search-crunchyroll-page {
+    --filter-search-sidebar-width: 64px;
+  }
+
+  .filter-search-page--sidebar-collapsed {
+    --filter-search-sidebar-width: 0px;
+  }
+
+  .filter-search-cr-container {
+    padding: 0 20px;
+    max-width: calc(100vw - var(--filter-search-sidebar-width));
+  }
+
+  .filter-search-cr-header {
+    padding: 24px 0;
+    padding-top: 56px;
+  }
+
+  .filter-search-header-content {
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 16px;
+  }
+
+  .filter-search-page-title {
+    font-size: 32px;
+  }
+
+  .filter-search-header-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .filter-search-page-meta {
+    flex-direction: row;
+    gap: 24px;
+    font-size: 14px;
+  }
+
+  .filter-search-meta-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .filter-search-header-actions {
+    display: flex;
+    gap: 12px;
+  }
+
+  .filter-search-cr-button {
+    padding: 10px 20px;
+    font-size: 14px;
+    min-height: 48px;
+  }
+
+  .filter-search-button-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  .filter-search-cr-main {
+    padding: 32px 0;
+  }
+
+  .filter-search-content-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  .filter-search-loading-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 24px;
+  }
+
+  .filter-search-card-content {
+    padding: 16px;
+    min-height: 80px;
+  }
+
+  .filter-search-card-title {
+    font-size: 16px;
+    margin-bottom: 12px;
+    min-height: auto;
+    /* Allow natural wrapping on desktop */
+    line-height: 1.3;
+  }
+
+  .filter-search-card-meta {
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .filter-search-meta-row {
+    font-size: 13px;
+  }
+
+  .filter-search-star-icon {
+    width: 14px;
+    height: 14px;
+  }
+
+  .filter-search-rank-badge,
+  .filter-search-year-badge {
+    top: 8px;
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  .filter-search-rank-badge {
+    left: 8px;
+  }
+
+  .filter-search-year-badge {
+    right: 8px;
+  }
+
+  .filter-search-load-more-container {
+    padding: 32px 0;
+  }
+
+  .filter-search-load-more {
+    padding: 16px 32px;
+    font-size: 16px;
+    width: auto;
+  }
+
+  .filter-search-skeleton-content {
+    padding: 16px;
+    min-height: 80px;
+  }
+
+  .filter-search-skeleton-title {
+    height: 20px;
+    margin-bottom: 12px;
+  }
+
+  .filter-search-skeleton-meta {
+    height: 60px;
+  }
+
+  .filter-search-empty-state {
+    min-height: 400px;
+    padding: 64px 0;
+  }
+
+  .filter-search-empty-content {
+    max-width: 400px;
+  }
+
+  .filter-search-empty-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 24px;
+  }
+
+  .filter-search-empty-content h3 {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .filter-search-empty-content p {
+    font-size: 16px;
+    margin-bottom: 32px;
+  }
+
+  .filter-search-error-state {
+    min-height: 400px;
+    padding: 64px 0;
+  }
+
+  .filter-search-error-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 24px;
+  }
+
+  .filter-search-error-state h2 {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  .filter-search-error-message {
+    font-size: 16px;
+    margin-bottom: 32px;
+  }
+}
+
+/* Large Desktop */
+@media (min-width: 1200px) {
+  .filter-search-content-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+
+  .filter-search-loading-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+}
+
+/* Extra Large Desktop */
+@media (min-width: 1400px) {
+  .filter-search-cr-container {
+    max-width: calc(1400px - var(--filter-search-sidebar-width));
   }
 }

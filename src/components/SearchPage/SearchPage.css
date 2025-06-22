@@ -452,9 +452,13 @@
   font-weight: 700;
 }
 
-/* Card Content */
+/* Card Content - Key changes here for title visibility */
 .rsp-card-content {
   padding: 6px;
+  min-height: 50px; /* Ensure enough space for titles */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .rsp-card-title {
@@ -463,12 +467,16 @@
   margin: 0;
   color: var(--rsp-text-primary);
   line-height: 1.2;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
   word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  /* Remove truncation - let titles wrap naturally */
+  display: block;
+  white-space: normal;
+  /* Ensure minimum height for consistency */
   min-height: 24px;
+  /* Allow text to expand as needed */
+  flex: 1;
 }
 
 /* Load More */
@@ -510,6 +518,7 @@
 
 .rsp-skeleton-content {
   padding: 6px;
+  min-height: 50px;
 }
 
 .rsp-skeleton-title {
@@ -668,6 +677,7 @@
 
   .rsp-card-content {
     padding: 8px;
+    min-height: 60px;
   }
 
   .rsp-card-title {
@@ -824,13 +834,15 @@
 
   .rsp-card-content {
     padding: 16px;
+    min-height: 80px;
   }
 
   .rsp-card-title {
     font-size: 16px;
-    -webkit-line-clamp: 2;
     margin-bottom: 12px;
     min-height: auto;
+    /* Allow natural wrapping on desktop */
+    line-height: 1.3;
   }
 
   .rsp-rank-badge,
@@ -860,6 +872,7 @@
 
   .rsp-skeleton-content {
     padding: 16px;
+    min-height: 80px;
   }
 
   .rsp-skeleton-title {
